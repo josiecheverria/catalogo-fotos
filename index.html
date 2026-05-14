@@ -90,16 +90,31 @@
   .lb-x { position:absolute; top:14px; right:14px; width:32px; height:32px; background:rgba(245,240,232,.9); border:none; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; color:var(--ink); z-index:10; transition:background .2s; }
   .lb-x:hover { background:var(--cream); }
 
-  .sel-bar { position:fixed; bottom:0; left:0; right:0; z-index:60; background:var(--ink); color:var(--cream); transform:translateY(100%); transition:transform .35s cubic-bezier(.34,1.56,.64,1); display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; gap:1rem; flex-wrap:wrap; }
+  .sel-bar {
+    position:fixed; bottom:0; left:0; right:0; z-index:60;
+    background:var(--ink); color:var(--cream);
+    transform:translateY(100%);
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+    display:flex; flex-direction:column; gap:.75rem;
+    padding:1rem 1.25rem;
+    padding-bottom:calc(1rem + env(safe-area-inset-bottom));
+  }
   .sel-bar.on { transform:translateY(0); }
-  .sel-left { display:flex; align-items:center; gap:.75rem; min-width:0; }
-  .sel-bubble { background:var(--gold); color:var(--ink); width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:500; flex-shrink:0; }
-  .sel-label { font-size:14px; }
-  .sel-codes { font-size:11px; color:rgba(245,240,232,.5); max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .sel-right { display:flex; gap:.75rem; align-items:center; }
-  .btn-clear { font-family:'DM Sans',sans-serif; font-size:12px; color:rgba(245,240,232,.6); background:none; border:none; cursor:pointer; padding:.5rem .75rem; transition:color .2s; }
+
+  .sel-top { display:flex; align-items:center; justify-content:space-between; gap:.75rem; }
+  .sel-left { display:flex; align-items:center; gap:.65rem; min-width:0; flex:1; }
+  .sel-bubble { background:var(--gold); color:var(--ink); width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:500; flex-shrink:0; }
+  .sel-label { font-size:13px; white-space:nowrap; }
+  .sel-codes { font-size:11px; color:rgba(245,240,232,.5); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  .btn-clear { font-family:'DM Sans',sans-serif; font-size:12px; color:rgba(245,240,232,.6); background:none; border:none; cursor:pointer; padding:.4rem .5rem; flex-shrink:0; transition:color .2s; white-space:nowrap; }
   .btn-clear:hover { color:var(--cream); }
-  .btn-send { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; color:var(--ink); background:var(--gold); border:none; padding:.65rem 1.4rem; border-radius:2px; cursor:pointer; display:flex; align-items:center; gap:.5rem; transition:background .2s; }
+  .btn-send {
+    font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500;
+    color:var(--ink); background:var(--gold); border:none;
+    padding:0 1rem; border-radius:4px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:.5rem;
+    width:100%; height:56px; transition:background .2s;
+  }
   .btn-send:hover { background:var(--gold-light); }
   .empty { text-align:center; padding:4rem 1rem; color:var(--ink-soft); font-size:14px; }
 </style>
@@ -192,20 +207,20 @@
 </div>
 
 <div class="sel-bar" id="sel-bar">
-  <div class="sel-left">
-    <div class="sel-bubble" id="sel-n">0</div>
-    <div>
-      <div class="sel-label">estilos selecionados</div>
-      <div class="sel-codes" id="sel-codes"></div>
+  <div class="sel-top">
+    <div class="sel-left">
+      <div class="sel-bubble" id="sel-n">0</div>
+      <div style="min-width:0">
+        <div class="sel-label">estilos selecionados</div>
+        <div class="sel-codes" id="sel-codes"></div>
+      </div>
     </div>
-  </div>
-  <div class="sel-right">
     <button class="btn-clear" id="btn-clear">Limpar</button>
-    <button class="btn-send" id="btn-send">
-      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.984-1.406A9.954 9.954 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.946 7.946 0 0 1-4.031-1.094l-.29-.171-2.96.835.836-2.889-.189-.298A7.946 7.946 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/></svg>
-      Enviar pelo WhatsApp
-    </button>
   </div>
+  <button class="btn-send" id="btn-send">
+    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.984-1.406A9.954 9.954 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.946 7.946 0 0 1-4.031-1.094l-.29-.171-2.96.835.836-2.889-.189-.298A7.946 7.946 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/></svg>
+    Enviar pelo WhatsApp
+  </button>
 </div>
 
 <script>
@@ -230,21 +245,6 @@ const CATALOG = {
       desc:'Blazer caramelo sobre blusa branca, fundo cinza neutro. Sorriso genuíno e postura acessível. Combina autoridade com proximidade — ótima para médicos, coaches e consultoras.',
       img: gd('1qPEVwPc6MksDJOumqAycdGAIHEeAluxS')
     },
-   {
-  code:'PRO-EX-004', name:'Blazer Preto com Atitude', sub:'executiva',
-  desc:'Blazer preto aberto, tatuagem no braço, batom vermelho e fundo terracota. Para quem quer uma foto profissional com personalidade e estilo próprio. Poderosa e marcante.',
-  img: gd('1ueDyJaFSKveHb8PAaLj7HXMkmKnMJSAC')
-},
-{
-  code:'PRO-EX-005', name:'Studio Dark', sub:'executiva',
-  desc:'Blazer preto, calça branca, fundo escuro de estúdio. Pose sentada no banquinho com olhar lateral. Sofisticação e presença sem precisar de palavras.',
-  img: gd('18StxlY8KyN2zK_wiu3Ay-rdAJdnoyFTy')
-},
-{
-  code:'PRO-EX-006', name:'Cadeira Wassily', sub:'executiva',
-  desc:'Terno preto total, cadeira Wassily cromada, fundo off-white clean. Sorriso aberto e postura relaxada. Elegância arquitetônica — ideal para quem quer sofisticação com leveza.',
-  img: gd('1gKLQmWu0V2Hg61laY2uzYG9urXGrDY_n')
-},
     {
       code:'PRO-CA-001', name:'Tesoura em Cena', sub:'cabelo',
       desc:'Cabeleireira de blazer branco segurando a tesoura de frente, salão ao fundo desfocado. Transmite domínio técnico e identidade profissional forte. Ótima para perfil e stories.',
